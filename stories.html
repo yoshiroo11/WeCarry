@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stories Shared — The Weight We Carry</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-1: #fbfbfc;
+      --bg-2: #f4eef6;
+      --accent: #6b5b8a;
+      --accent-2: #cda6a2;
+      --muted: #6b6b78;
+      --radius: 14px;
+      --glass-shadow: 0 8px 30px rgba(17,17,25,0.06);
+      --glass-border: rgba(255,255,255,0.45);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(180deg, var(--bg-1), var(--bg-2));
+      color: #111;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 80px;
+    }
+
+    header {
+      background: linear-gradient(to right, #e8b4b8, #b5838d);
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    header h1 { margin: 0; font-size: 24px; letter-spacing: 0.5px; }
+    header p { margin: 4px 0 0; font-size: 14px; opacity: 0.9; }
+
+    .back-home {
+      display: inline-block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      box-shadow: var(--glass-shadow);
+      font-weight: 600;
+      transition: transform 0.2s ease;
+    }
+    .back-home:hover { transform: translateY(-2px); }
+
+    #toggle-music {
+      display: inline-block;
+      margin: 5px auto;
+      padding: 10px 20px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      color: white;
+      text-decoration: none;
+      border-radius: 25px;
+      box-shadow: var(--glass-shadow);
+      font-weight: 600;
+      transition: transform 0.2s ease;
+    }
+    #toggle-music:hover  { transform: translateY(-2px); }
+    
+
+    #stories-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    /* Floating story-box */
+    .story-box {
+      border-radius: var(--radius);
+      background: rgba(255,255,255,0.8);
+      border: 5px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      padding: 20px;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      position: relative;
+
+      /* floating animation */
+      animation: float 3s ease-in-out infinite;
+      will-change: transform;
+    }
+    .story-box:hover {
+      transform: scale(1.03);
+      box-shadow: 0 10px 26px rgba(17,17,25,0.08);
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0px); }
+    }
+
+    .story-box h3 { margin: 0 0 8px 0; font-size: 18px; font-weight: 600; color: var(--accent); }
+    .story-box p { margin: 0 0 10px 0; color: #222; font-size: 15px; white-space: pre-wrap; }
+    .story-box small { color: var(--muted); font-size: 13px; }
+
+    .accent-bar {
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 6px;
+      border-top-left-radius: var(--radius);
+      border-bottom-left-radius: var(--radius);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      animation: fadeIn 0.3s ease forwards;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .modal-content {
+      margin: 8% auto;
+      padding: 25px;
+      border-radius: 20px;
+      width: 85%;
+      max-width: 500px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      background: rgba(255,255,255,0.95);
+      border: 1px solid var(--glass-border);
+      animation: popUp 0.4s ease forwards;
+      backdrop-filter: blur(10px);
+    }
+    @keyframes popUp { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    .modal-content h3 { margin-top: 0; color: var(--accent); }
+    .close { position: absolute; top: 15px; right: 20px; font-size: 22px; color: #666; cursor: pointer; }
+
+    .empty { text-align: center; color: var(--muted); margin-top: 40px; }
+
+    footer {
+      position: fixed; left: 0; right: 0; bottom: 0;
+      height: 56px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 500; font-size: 14px;
+      box-shadow: 0 -6px 20px rgba(107,91,138,0.14);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Stories Shared</h1>
+    <p>Real voices. Real feelings. Shared quietly.</p>
+  </header>
+
+  <div style="text-align:center;">
+    <a href="yoyo.html" class="back-home">🏠 Back to Home</a>
+  </div>
+
+  <!-- Music toggle button -->
+  <div style="text-align:center;">
+  <button id="toggle-music">🔊 Play Music</button>
+  </div>
+  
+  <!-- Background music -->
+  <audio id="bg-music" loop>
+    <source src="your-music-file.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <main>
+    <div id="stories-container"></div>
+    <div class="empty" id="empty-msg" style="display:none;">No stories yet. 🌧️</div>
+  </main>
+
+  <div id="story-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3 id="modal-title"></h3>
+      <p id="modal-text"></p>
+      <small id="modal-date"></small>
+    </div>
+  </div>
+
+  <footer>The Weight We Carry — Where every story matters</footer>
+
+  <!-- Firebase & Music Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAq-o-H0Noqn2HcIanUyeDC7vjPep-VG9Q",
+      authDomain: "website-62fcc.firebaseapp.com",
+      projectId: "website-62fcc",
+      storageBucket: "website-62fcc.firebasestorage.app",
+      messagingSenderId: "644610818809",
+      appId: "1:644610818809:web:bd674cc3c6746eefa19828",
+      measurementId: "G-0RGSECJH7J"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function loadStories() {
+      const container = document.getElementById("stories-container");
+      const emptyMsg = document.getElementById("empty-msg");
+      container.innerHTML = "<p style='text-align:center;color:#888;'>Loading stories...</p>";
+
+      try {
+        const querySnapshot = await getDocs(collection(db, "stories"));
+        container.innerHTML = "";
+        if (querySnapshot.empty) {
+          emptyMsg.style.display = "block";
+          return;
+        } else emptyMsg.style.display = "none";
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const div = document.createElement("div");
+          div.classList.add("story-box");
+          div.style.animationDelay = `${Math.random() * 2}s`;
+          const color = data.color || "#cda6a2";
+
+          div.innerHTML = `
+            <div class="accent-bar" style="background:${color}"></div>
+            <h3>${data.name || "Anonymous"}</h3>
+            <p>${data.story?.length > 100 ? data.story.substring(0, 100) + "..." : data.story}</p>
+            <small>${data.date || ""}</small>
+          `;
+
+          div.addEventListener("click", () => {
+            const modal = document.getElementById("story-modal");
+            document.getElementById("modal-title").textContent = data.name || "Anonymous";
+            document.getElementById("modal-text").textContent = data.story || "";
+            document.getElementById("modal-date").textContent = data.date || "";
+            modal.style.display = "block";
+          });
+          container.appendChild(div);
+        });
+      } catch (e) {
+        console.error("Error loading stories:", e);
+        container.innerHTML = "<p style='text-align:center;color:red;'>Failed to load stories.</p>";
+      }
+    }
+
+    loadStories();
+
+    const modal = document.getElementById("story-modal");
+    const closeBtn = document.querySelector(".close");
+    closeBtn.addEventListener("click", () => { modal.style.display = "none"; });
+    window.addEventListener("click", (e) => { if (e.target === modal) modal.style.display = "none"; });
+
+    // Music controls
+    const music = document.getElementById('bg-music');
+    const toggleBtn = document.getElementById('toggle-music');
+    toggleBtn.addEventListener('click', () => {
+      if (music.paused) {
+        music.play();
+        toggleBtn.textContent = "🔇 Pause Music";
+      } else {
+        music.pause();
+        toggleBtn.textContent = "🔊 Play Music";
+      }
+    });
+
+    // Auto-mute first (browser safe)
+    music.muted = true;
+    setTimeout(() => { music.muted = false; }, 1000);
+  </script>
+</body>
+</html>
